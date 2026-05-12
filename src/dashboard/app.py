@@ -246,7 +246,10 @@ if scope == "All rentals":
         fig_type.update_traces(textinfo="label+percent")
         st.plotly_chart(fig_type, use_container_width=True)
         st.caption(
-            "Mobile dominates (~80% of rentals). Connect (20%) shows a higher problematic rate on consecutive rentals (12.2% vs 7.7%)."
+            "Mobile dominates (~80% of rentals). "
+            "Connect (20%) shows a lower problematic "
+            "rate on consecutive rentals "
+            "(8.5% vs 14.5% for Mobile)."
         )
 
     with col_chart2:
@@ -422,7 +425,9 @@ with col_viz2:
         fig_wait.update_layout(showlegend=False)
         st.plotly_chart(fig_wait, use_container_width=True)
         st.caption(
-            "Impacted next drivers wait a median of ~35 min. 30% wait over 60 min, directly causing cancellations and poor experience."
+            "Impacted next drivers wait a median of "
+            "~27 min. 30% wait over 60 min, directly "
+            "causing cancellations and poor experience."
         )
     else:
         st.info("No problematic cases in the selected scope.")
@@ -441,7 +446,9 @@ if scope == "All rentals":
 
     st.dataframe(prob_by_type, use_container_width=True)
     st.caption(
-        "Only 8.6% of rentals have a consecutive booking, yet 11.8% of those are problematic (218 cases). Connect: 12.2%, Mobile: 7.7%."
+        "Only 8.6% of rentals have a consecutive "
+        "booking, yet 11.8% of those are problematic "
+        "(218 cases). Connect: 8.5%, Mobile: 14.5%."
     )
 
 # =============================================================================
@@ -608,23 +615,23 @@ st.markdown(
 
     | Strategy | Threshold | Scope | Trade-off |
     |----------|-----------|-------|-----------|
-    | Conservative | 60 min | Connect | ~45% solved, low impact |
-    | Balanced | 120 min | Connect | ~70% solved, moderate |
-    | Aggressive | 180 min | All | ~85% solved, high impact |
+    | Conservative | 60 min | Connect | ~70% solved, low impact |
+    | Balanced | 120 min | Connect | ~86% solved, moderate |
+    | Aggressive | 180 min | All | ~90% solved, high impact |
 
     ### Key Takeaways
 
-    1. **Connect-only scope is safer**: Affects only 20% of rentals while addressing
-       higher problematic rate (12% vs 8%)
+    1. **Connect-only scope is safer**: Affects only 20% of rentals with automated
+       checkin, enabling easier threshold enforcement
 
     2. **60-minute threshold is a good starting point**: Minimal revenue impact with
        meaningful improvement in driver experience
 
-    3. **Problematic cases are relatively rare**: Only ~1.5% of all rentals are affected
-       by previous rental delays
+    3. **Problematic cases are relatively rare**: At a 60-min Connect threshold,
+       less than 1% of all rentals are affected
 
-    4. **Mobile rentals have more volume but lower problematic rate**: Consider phased
-       rollout starting with Connect
+    4. **Mobile rentals have more volume but higher problematic rate**: Consider
+       phased rollout starting with Connect
     """.format(
         len(df),
         len(df[df["checkin_type"] == "mobile"]) / len(df) * 100,
